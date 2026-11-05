@@ -1,0 +1,13 @@
+{
+  "name": "reel-scroll",
+  "owner": {
+    "name": "Omar Raslan"
+  },
+  "plugins": [
+    {
+      "name": "reel-scroll",
+      "source": "./"
+    }
+  ],
+  "description": "Reel Scroll 1.0: Instagram Reels that unlock only while Claude is thinking"
+}
