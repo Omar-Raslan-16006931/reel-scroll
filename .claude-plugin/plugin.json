@@ -1,10 +1,22 @@
 {
   "name": "reel-scroll",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Reel Scroll 1.0: your Instagram Reels unlock only while Claude is thinking, and lock the moment the answer lands",
   "author": {
     "name": "Omar Raslan"
   },
   "license": "MIT",
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Where Reel Scroll runs",
+      "description": "auto = every chat. chat = only chats where you ran /enable-reels.",
+      "options": [
+        "auto",
+        "chat"
+      ],
+      "default": "auto"
+    }
+  }
 }

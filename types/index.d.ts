@@ -1,3 +1,6 @@
+/** enabled: true after /enable-reels, false after /disable-reels, null while the chat follows the plugin's mode. */
+export type Chat = { enabled: boolean | null }
+
 export type Phase = 'idle' | 'thinking' | 'done'
 
 export type View = {
@@ -14,6 +17,6 @@ export type View = {
 
 declare module 'claude-code' {
   interface PluginState {
-    'reel-scroll': { view: View }
+    'reel-scroll': { view: View; chat: Chat }
   }
 }

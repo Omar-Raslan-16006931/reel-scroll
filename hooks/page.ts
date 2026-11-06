@@ -148,3 +148,11 @@ export const unlockScript = (startedAt: number) => `(() => {
   if (v) v.play().catch(() => {});
   return 'unlocked';
 })()`
+
+// Takes the overlay, pill and guards away and leaves the page as it was.
+export const offScript = () => `(() => {
+  ${helpers}
+  if (W.__rsWasMuted === false) document.querySelectorAll('video').forEach(v => { try { v.muted = false; } catch (e) {} });
+  W.__rsWasMuted = undefined;
+  return 'off';
+})()`

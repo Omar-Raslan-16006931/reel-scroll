@@ -1,9 +1,9 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, Timer } from 'claude-code'
 
-import type { View } from '../types'
+import type { Chat, View } from '../types'
 import { REELS, REEL_H, REEL_W, reelSvg } from './reels'
-import { lockScript, unlockScript } from './page'
+import { lockScript, offScript, unlockScript } from './page'
 import type { Reel } from './reels'
 
 const PANE = 'reels'
@@ -22,6 +22,7 @@ const START: View = {
 }
 
 const view = atom({ plugin: 'reel-scroll', key: 'view' } as const, START)
+const chat = atom({ plugin: 'reel-scroll', key: 'chat' } as const, { enabled: null } as Chat)
 
 // The app's built-in browser, reached through the linked computer.
 const BROWSER = 'remote-devices'
@@ -118,7 +119,34 @@ const lockReels = async ($: Engine, isIdle: boolean) => {
   if (tabId) await runIn($, tabId, lockScript(isIdle))
 }
 
-export const register: Register = on => {
+const offReels = async ($: Engine) => {
+  const { tabId } = await findTab($)
+  if (tabId) await runIn($, tabId, offScript())
+}
+
+// Asked once, with the person at the keyboard: lets this chat use instagram.com in the built-in browser.
+const askAccess = async ($: Engine) => {
+  for (let i = 0; i < ROUTES.length; i++) {
+    try {
+      await callOnce($, i, 'request_access', { url: 'https://www.instagram.com', scope: 'site' })
+      route = i
+      return true
+    } catch {
+      /* try the next route */
+    }
+  }
+  return false
+}
+
+const isOn = async ($: Engine, mode: string) => {
+  const c = await read($, chat)
+  return c.enabled ?? mode === 'auto'
+}
+
+export const register: Register = (on, options) => {
+  // 'auto': every chat. 'chat': only chats where /enable-reels was run.
+  const mode = String(options?.mode ?? 'auto')
+
   let tick: Timer | undefined
   let mainTurn: string | undefined
   // Browser calls run in order, off the turn, so Claude never waits on them.
@@ -134,10 +162,20 @@ export const register: Register = on => {
       name: 'reels',
       description: 'Open Reel Scroll: reels that unlock only while Claude is thinking',
     })
-    $.ui.status('🔒 Reels locked · ask Claude something')
-    $.clock.after(0, () => {
-      void lockReels($, true).catch(() => {})
+    await $.command.register({
+      name: 'enable-reels',
+      description: 'Turn Reel Scroll on for this chat: reels unlock while Claude thinks, in every message',
     })
+    await $.command.register({
+      name: 'disable-reels',
+      description: 'Turn Reel Scroll off for this chat',
+    })
+    if (await isOn($, mode)) {
+      $.ui.status('🔒 Reels locked · ask Claude something')
+      $.clock.after(0, () => {
+        void lockReels($, true).catch(() => {})
+      })
+    }
 
     return next(e)
   })
@@ -148,10 +186,37 @@ export const register: Register = on => {
     return { text: 'Reel Scroll is open. Ask Claude something to unlock your feed.' }
   })
 
+  on('command.run', { command: 'enable-reels' }, async $ => {
+    await update($, chat, (): Chat => ({ enabled: true }))
+    $.ui.status('🔒 Reels locked · ask Claude something')
+    const ok = await askAccess($)
+    $.clock.after(0, () => {
+      void lockReels($, true).catch(() => {})
+    })
+
+    return {
+      text: ok
+        ? 'Reel Scroll is on for this chat. Reels unlock while Claude thinks and lock when the answer lands.'
+        : 'Reel Scroll is on for this chat, but I could not reach the app\'s built-in browser. Open the Claude desktop app, then ask Claude something.',
+    }
+  })
+
+  on('command.run', { command: 'disable-reels' }, async $ => {
+    await update($, chat, (): Chat => ({ enabled: false }))
+    stopTick()
+    $.ui.status(undefined)
+    $.clock.after(0, () => {
+      void offReels($).catch(() => {})
+    })
+
+    return { text: 'Reel Scroll is off for this chat. Run /enable-reels to turn it back on.' }
+  })
+
   // Claude starts thinking: unlock.
   on('turn.start', async ($, e, next) => {
     const started = await next(e)
     if (e.agentId !== undefined) return started
+    if (!(await isOn($, mode))) return started
 
     mainTurn = e.turnId
     const now = await $.clock.now()
@@ -184,6 +249,7 @@ export const register: Register = on => {
   on('turn.complete', async ($, e, next) => {
     const done = await next(e)
     if (e.agentId !== undefined) return done
+    if (!(await isOn($, mode))) return done
 
     mainTurn = undefined
     stopTick()
