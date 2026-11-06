@@ -20,6 +20,16 @@ Productive scrolling. Your Instagram Reels unlock only while Claude is thinking,
 
 Reel Scroll is a plugin with hooks, and Claude only runs plugin hooks in **Claude Code** (the desktop app's **Code** tab, the terminal, IDE extensions) and in **Cowork** tasks. The plain **Chat** tab, and claude.ai in the browser, ignore plugin hooks, so Reel Scroll cannot run there. Start a Code or Cowork session in the Claude desktop app to use it.
 
+### Chat skills: `/enable-reels` and `/disable-reels`
+
+For plain Chat there are two skills. Run `/enable-reels` once in a chat and Reel Scroll unlocks the reels in the built-in browser while Claude works on each reply, then locks them when the answer is ready. `/disable-reels` turns it off for that chat.
+
+**Download:** [`reel-scroll-skills.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/reel-scroll-skills.zip) (both skills), or one at a time: [`enable-reels.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/enable-reels.zip), [`disable-reels.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/disable-reels.zip).
+
+**Install:** in the Claude app open **Customize > Skills**, choose **Upload skill**, and pick a zip (upload `enable-reels.zip` and `disable-reels.zip` separately if the app takes one skill per file). The skill sources are in [`skills/`](skills).
+
+Needs the Claude desktop app's built-in browser and a one-time Instagram sign-in. Skills are instructions, so Claude makes the unlock and lock calls itself around each reply.
+
 ### Plain claude.ai chat
 
 Chat can't run plugins, so there is a Chrome extension for it: [`claude-ai-extension`](claude-ai-extension/README.md). Load it unpacked in Chrome and Reel Scroll works in every claude.ai chat.
