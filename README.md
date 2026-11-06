@@ -1,5 +1,15 @@
 # Reel Scroll 1.0
 
+<p align="center">
+  <a href="media/reel-scroll-promo.mp4">
+    <img src="media/preview.gif" alt="Reel Scroll promo (click for the full video with sound)" width="300">
+  </a>
+  <br>
+  <a href="media/reel-scroll-promo.mp4"><b>▶ Watch the full 44-second video (with sound)</b></a>
+</p>
+
+<video src="media/reel-scroll-promo.mp4" poster="media/poster.jpg" controls muted width="360"></video>
+
 Productive scrolling. Your Instagram Reels unlock only while Claude is thinking, and lock the moment the answer lands.
 
 - **You send Claude a message:** the Claude app's built-in browser jumps to your Instagram Reels, with a "Claude is thinking · 12s" pill at the top of the screen.
