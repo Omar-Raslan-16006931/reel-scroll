@@ -1,81 +1,81 @@
-# Reel Scroll 1.0
+<h1 align="center">Reel Scroll</h1>
+<p align="center"><b>Productive scrolling.</b><br>Your Instagram Reels unlock only while Claude is thinking, and lock the moment the answer lands.</p>
 
 <p align="center">
-  <a href="media/reel-scroll-promo.mp4">
-    <img src="media/preview.gif" alt="Reel Scroll promo (click for the full video with sound)" width="300">
-  </a>
-  <br>
-  <a href="media/reel-scroll-promo.mp4"><b>▶ Watch the full 44-second video (with sound)</b></a>
+  <a href="media/reel-scroll-promo.mp4"><img src="media/preview.gif" alt="Reel Scroll promo" width="300"></a><br>
+  <a href="media/reel-scroll-promo.mp4"><b>▶ Watch the 44-second video (with sound)</b></a>
 </p>
 
-<video src="media/reel-scroll-promo.mp4" poster="media/poster.jpg" controls muted width="360"></video>
+## How it works
 
-Productive scrolling. Your Instagram Reels unlock only while Claude is thinking, and lock the moment the answer lands.
+1. You send Claude a message. Instagram Reels open in the Claude app's built-in browser, with a **"Claude is thinking"** timer.
+2. Claude finishes. The video pauses, mutes and a **lock screen** shows how long you scrolled.
+3. Your next message unlocks it again.
 
-- **You send Claude a message:** the Claude app's built-in browser jumps to your Instagram Reels, with a "Claude is thinking · 12s" pill at the top of the screen.
-- **Claude finishes:** the video pauses and mutes, and a lock screen shows how long you scrolled and how many reels you watched. Scrolling and clicks are blocked until your next message.
-- **Login pages are never locked**, so signing in or two-step verification always works.
+Sign-in pages are never locked, so logging in always works.
 
-## Where it works
+---
 
-Reel Scroll is a plugin with hooks, and Claude only runs plugin hooks in **Claude Code** (the desktop app's **Code** tab, the terminal, IDE extensions) and in **Cowork** tasks. The plain **Chat** tab, and claude.ai in the browser, ignore plugin hooks, so Reel Scroll cannot run there. Start a Code or Cowork session in the Claude desktop app to use it.
+## Pick your version
 
-### Chat skills: `/enable-reels` and `/disable-reels`
+| You use | Get |
+|---|---|
+| **Claude Chat** (the normal chat) | [Chat skills](#-claude-chat) |
+| **Claude Code** or **Cowork** | [Plugin](#-claude-code--cowork) |
 
-For plain Chat there are two skills. Run `/enable-reels` once in a chat and Reel Scroll unlocks the reels in the built-in browser while Claude works on each reply, then locks them when the answer is ready. `/disable-reels` turns it off for that chat.
+---
 
-**Download:** [`reel-scroll-skills.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/reel-scroll-skills.zip) (both skills), or one at a time: [`enable-reels.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/enable-reels.zip), [`disable-reels.zip`](https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/disable-reels.zip).
+## 💬 Claude Chat
 
-**Install:** in the Claude app open **Customize > Skills**, choose **Upload skill**, and pick a zip (upload `enable-reels.zip` and `disable-reels.zip` separately if the app takes one skill per file). The skill sources are in [`skills/`](skills).
+Two skills: `/enable-reels` turns it on for the chat you are in, `/disable-reels` turns it off.
 
-Needs the Claude desktop app's built-in browser and a one-time Instagram sign-in. Skills are instructions, so Claude makes the unlock and lock calls itself around each reply.
+<p align="center">
+  <a href="https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/enable-reels.zip"><img src="https://img.shields.io/badge/%E2%AC%87%20%20DOWNLOAD%20%20enable--reels-ff6a1a?style=for-the-badge&labelColor=0c0a09" alt="Download enable-reels" height="56"></a>
+  <br><br>
+  <a href="https://github.com/Omar-Raslan-16006931/reel-scroll/raw/main/downloads/disable-reels.zip"><img src="https://img.shields.io/badge/%E2%AC%87%20%20DOWNLOAD%20%20disable--reels-57534e?style=for-the-badge&labelColor=0c0a09" alt="Download disable-reels" height="56"></a>
+</p>
 
-### Plain claude.ai chat
+**Install (do it once for each file):**
 
-Chat can't run plugins, so there is a Chrome extension for it: [`claude-ai-extension`](claude-ai-extension/README.md). Load it unpacked in Chrome and Reel Scroll works in every claude.ai chat.
+1. Click a download button above.
+2. In the Claude app go to **Customize → Skills → Upload skill**.
+3. Pick the zip you downloaded.
 
-## Install
+**Use it:**
 
-In the Claude desktop app: click **+** next to the prompt box, then **Plugins**, **Add marketplace** with `Omar-Raslan-16006931/reel-scroll`, then **Add plugin**.
+1. Open the Claude desktop app's built-in browser and sign in to Instagram once.
+2. In any chat, type `/enable-reels`.
+3. Ask Claude anything. Reels unlock while it works.
 
-In a Claude Code terminal session:
+---
 
-```
-/plugin install reel-scroll --marketplace Omar-Raslan-16006931/reel-scroll
-```
+## 🧑‍💻 Claude Code / Cowork
 
-Answer `y` to add the marketplace, then pick the **user** scope so it runs in every session.
+<p align="center">
+  <a href="#install-the-plugin"><img src="https://img.shields.io/badge/%E2%AC%87%20%20INSTALL%20%20THE%20PLUGIN-ff6a1a?style=for-the-badge&labelColor=0c0a09" alt="Install the plugin" height="56"></a>
+</p>
 
-From a shell:
+### Install the plugin
+
+In the Claude desktop app click **+** next to the prompt box, then **Plugins**, **Add marketplace**, type `Omar-Raslan-16006931/reel-scroll`, then **Add plugin**.
+
+Or in a terminal:
 
 ```
 claude plugin install reel-scroll --marketplace Omar-Raslan-16006931/reel-scroll
 ```
 
-## First run
+Choose the **user** scope so it works in every session, then start a new chat.
 
-1. Open the built-in browser in the Claude desktop app (Cmd+Shift+B on Mac, Ctrl+Shift+B on Windows).
-2. Go to instagram.com and sign in once. The sign-in is kept for later sessions.
-3. Send Claude anything. Reels unlock.
+**Commands:** `/reels-on` and `/reels-off` for the current chat. In plugin settings, set **Where Reel Scroll runs** to `auto` (every chat) or `chat` (only after `/reels-on`).
 
-Reel Scroll needs the Claude desktop app open, because the reels play in its built-in browser. `/reels` opens a small panel with built-in demo reels if you want to try it without Instagram.
+---
 
-## Commands and settings
+## Troubleshooting
 
-(Named `/reels-on` and `/reels-off` so they never clash with the `/enable-reels` skill for Chat.)
+- **Nothing happens:** the Claude desktop app must be open. The reels play in its built-in browser.
+- **It asks about instagram.com:** choose "allow for this site", once.
+- **New chat, still nothing:** chats opened before you installed don't pick it up. Start a new one.
+- **Using claude.ai in Chrome?** There is also a [Chrome extension](claude-ai-extension/README.md).
 
-- `/reels-on` turns Reel Scroll on for the current chat and asks for the one-time instagram.com approval right then.
-- `/reels-off` turns it off for the current chat.
-- `/reels` opens the demo-reels panel.
-- **Where it runs** (plugin setting): `auto` (default) runs in every chat. `chat` runs only in chats where you ran `/reels-on`.
-
-## Not running in a chat?
-
-- Run `/reels-on` in that chat. It also grants the Instagram approval.
-- **Install for every session:** when asked for a scope, pick **user**. Project or local scope only works in that one project.
-- **Chats already open don't pick it up.** Start a new chat, or run `/reload-plugins`.
-- **Approve Instagram once.** The built-in browser asks before a chat may use instagram.com. Reel Scroll requests it for you; choose "allow for this site" so new chats don't ask again.
-- **Update:** `claude plugin update reel-scroll`, then `/reload-plugins`.
-- The Claude desktop app has to be open and online, because the reels play in its built-in browser.
-
-Not affiliated with Instagram or Meta.
+Not affiliated with Instagram, Meta or Anthropic.
