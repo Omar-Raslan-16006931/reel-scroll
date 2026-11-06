@@ -43,19 +43,40 @@ const ROUTES: [string, (tool: string) => string][] = [
 ]
 let route = -1
 
+const NEEDS_ACCESS = /not (yet )?allowed|approv|permission|request_access|blocked|denied/i
+let askedAccess = 0
+
+const callOnce = async ($: Engine, i: number, tool: string, args: Record<string, unknown>) => {
+  const [server, name] = ROUTES[i]!
+  const r = await $.mcp.call(server, name(tool), args)
+  const text = textOf(r)
+  if ((r as { isError?: boolean }).isError) throw new Error(text || tool + ' failed')
+  return text
+}
+
 const call = async ($: Engine, tool: string, args: Record<string, unknown>) => {
   const order = route >= 0 ? [route] : ROUTES.map((_, i) => i)
   let last: unknown
   for (const i of order) {
-    const [server, name] = ROUTES[i]!
     try {
-      const r = await $.mcp.call(server, name(tool), args)
-      const text = textOf(r)
-      if ((r as { isError?: boolean }).isError) throw new Error(text || tool + ' failed')
+      const text = await callOnce($, i, tool, args)
       route = i
       return text
     } catch (err) {
       last = err
+      // A new chat has not been allowed to use instagram.com yet: ask, then try again.
+      if (NEEDS_ACCESS.test(String((err as Error)?.message ?? err)) && Date.now() - askedAccess > 20000) {
+        askedAccess = Date.now()
+        $.ui.toast('Reel Scroll: approve instagram.com for the built-in browser to unlock your feed.')
+        try {
+          await callOnce($, i, 'request_access', { url: 'https://www.instagram.com', scope: 'site' })
+          const text = await callOnce($, i, tool, args)
+          route = i
+          return text
+        } catch (err2) {
+          last = err2
+        }
+      }
       if (route >= 0) break
     }
   }

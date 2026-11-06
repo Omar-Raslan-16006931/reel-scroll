@@ -42,4 +42,12 @@ claude plugin install reel-scroll --marketplace Omar-Raslan-16006931/reel-scroll
 
 Reel Scroll needs the Claude desktop app open, because the reels play in its built-in browser. `/reels` opens a small panel with built-in demo reels if you want to try it without Instagram.
 
+## Not running in a chat?
+
+- **Install for every session:** when asked for a scope, pick **user**. Project or local scope only works in that one project.
+- **Chats already open don't pick it up.** Start a new chat, or run `/reload-plugins`.
+- **Approve Instagram once.** The built-in browser asks before a chat may use instagram.com. Reel Scroll requests it for you; choose "allow for this site" so new chats don't ask again.
+- **Update:** `claude plugin update reel-scroll`, then `/reload-plugins`.
+- The Claude desktop app has to be open and online, because the reels play in its built-in browser.
+
 Not affiliated with Instagram or Meta.
