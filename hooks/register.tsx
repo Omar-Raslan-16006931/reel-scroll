@@ -144,7 +144,7 @@ const isOn = async ($: Engine, mode: string) => {
 }
 
 export const register: Register = (on, options) => {
-  // 'auto': every chat. 'chat': only chats where /enable-reels was run.
+  // 'auto': every chat. 'chat': only chats where /reels-on was run.
   const mode = String(options?.mode ?? 'auto')
 
   let tick: Timer | undefined
@@ -163,11 +163,11 @@ export const register: Register = (on, options) => {
       description: 'Open Reel Scroll: reels that unlock only while Claude is thinking',
     })
     await $.command.register({
-      name: 'enable-reels',
+      name: 'reels-on',
       description: 'Turn Reel Scroll on for this chat: reels unlock while Claude thinks, in every message',
     })
     await $.command.register({
-      name: 'disable-reels',
+      name: 'reels-off',
       description: 'Turn Reel Scroll off for this chat',
     })
     if (await isOn($, mode)) {
@@ -186,7 +186,7 @@ export const register: Register = (on, options) => {
     return { text: 'Reel Scroll is open. Ask Claude something to unlock your feed.' }
   })
 
-  on('command.run', { command: 'enable-reels' }, async $ => {
+  on('command.run', { command: 'reels-on' }, async $ => {
     await update($, chat, (): Chat => ({ enabled: true }))
     $.ui.status('🔒 Reels locked · ask Claude something')
     const ok = await askAccess($)
@@ -201,7 +201,7 @@ export const register: Register = (on, options) => {
     }
   })
 
-  on('command.run', { command: 'disable-reels' }, async $ => {
+  on('command.run', { command: 'reels-off' }, async $ => {
     await update($, chat, (): Chat => ({ enabled: false }))
     stopTick()
     $.ui.status(undefined)
@@ -209,7 +209,7 @@ export const register: Register = (on, options) => {
       void offReels($).catch(() => {})
     })
 
-    return { text: 'Reel Scroll is off for this chat. Run /enable-reels to turn it back on.' }
+    return { text: 'Reel Scroll is off for this chat. Run /reels-on to turn it back on.' }
   })
 
   // Claude starts thinking: unlock.

@@ -52,14 +52,16 @@ Reel Scroll needs the Claude desktop app open, because the reels play in its bui
 
 ## Commands and settings
 
-- `/enable-reels` turns Reel Scroll on for the current chat and asks for the one-time instagram.com approval right then.
-- `/disable-reels` turns it off for the current chat.
+(Named `/reels-on` and `/reels-off` so they never clash with the `/enable-reels` skill for Chat.)
+
+- `/reels-on` turns Reel Scroll on for the current chat and asks for the one-time instagram.com approval right then.
+- `/reels-off` turns it off for the current chat.
 - `/reels` opens the demo-reels panel.
-- **Where it runs** (plugin setting): `auto` (default) runs in every chat. `chat` runs only in chats where you ran `/enable-reels`.
+- **Where it runs** (plugin setting): `auto` (default) runs in every chat. `chat` runs only in chats where you ran `/reels-on`.
 
 ## Not running in a chat?
 
-- Run `/enable-reels` in that chat. It also grants the Instagram approval.
+- Run `/reels-on` in that chat. It also grants the Instagram approval.
 - **Install for every session:** when asked for a scope, pick **user**. Project or local scope only works in that one project.
 - **Chats already open don't pick it up.** Start a new chat, or run `/reload-plugins`.
 - **Approve Instagram once.** The built-in browser asks before a chat may use instagram.com. Reel Scroll requests it for you; choose "allow for this site" so new chats don't ask again.
