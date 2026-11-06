@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Reel Scroll for claude.ai",
+  "version": "1.0.0",
+  "description": "Your Instagram Reels unlock only while Claude is thinking on claude.ai, and lock the moment the answer lands.",
+  "permissions": ["tabs", "storage"],
+  "host_permissions": ["https://claude.ai/*", "https://*.instagram.com/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["https://claude.ai/*"], "js": ["claude.js"], "run_at": "document_idle" },
+    { "matches": ["https://*.instagram.com/*"], "js": ["instagram.js"], "run_at": "document_idle" }
+  ],
+  "action": { "default_title": "Reel Scroll", "default_popup": "popup.html", "default_icon": { "48": "icons/48.png", "128": "icons/128.png" } },
+  "icons": { "48": "icons/48.png", "128": "icons/128.png" }
+}

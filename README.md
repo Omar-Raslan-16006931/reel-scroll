@@ -20,6 +20,10 @@ Productive scrolling. Your Instagram Reels unlock only while Claude is thinking,
 
 Reel Scroll is a plugin with hooks, and Claude only runs plugin hooks in **Claude Code** (the desktop app's **Code** tab, the terminal, IDE extensions) and in **Cowork** tasks. The plain **Chat** tab, and claude.ai in the browser, ignore plugin hooks, so Reel Scroll cannot run there. Start a Code or Cowork session in the Claude desktop app to use it.
 
+### Plain claude.ai chat
+
+Chat can't run plugins, so there is a Chrome extension for it: [`claude-ai-extension`](claude-ai-extension/README.md). Load it unpacked in Chrome and Reel Scroll works in every claude.ai chat.
+
 ## Install
 
 In the Claude desktop app: click **+** next to the prompt box, then **Plugins**, **Add marketplace** with `Omar-Raslan-16006931/reel-scroll`, then **Add plugin**.
